@@ -2,10 +2,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Main {
@@ -31,6 +28,26 @@ public class Main {
         System.out.println("Testing on " + testData.size() + " patterns\n");
 
 
+        for(int i = 1; i <= maxPolyDegree; i++) {
+            for (double[] data : trainData) {
+                double input = data[0];
+                double desired = data[1];
+                double[] pattern = new double[i];
+
+                for (int j = 0; j < i; j++) {
+                    pattern[j] = Math.pow(input, j + 1);
+                }
+
+                pattern = normalize(pattern);
+
+                System.out.println("Input: " + input);
+                for(double num : pattern) {
+                    System.out.print(num + ", ");
+                }
+                System.out.println("\n**********************");
+            }
+        }
+
 
         double[] initWeights = new double[maxPolyDegree];
         double initBias = random.nextDouble();
@@ -42,7 +59,9 @@ public class Main {
         for(int i = 1; i <= maxPolyDegree; i++) {
             // Make neuron
             Neuron neuron = new Neuron(i);
-            neuron.setWeight(i-1, initWeights[i-1]);
+            for(int j = 0; j < initWeights.length; j++) {
+                neuron.setWeight(j, initWeights[j]);
+            }
             neuron.setBias(initBias);
 
             // Do the training
@@ -61,6 +80,10 @@ public class Main {
 
 
     public static double[] normalize(double[] array) {
+
+        if(array.length == 1) {
+            return new double[] {array[0] / 12.5};
+        }
 
         double[] vector = array.clone();
 
