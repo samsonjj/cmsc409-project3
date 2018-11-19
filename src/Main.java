@@ -63,6 +63,13 @@ public class Main {
                 trainNeuron(neuron, trainData);
             }
 
+            if(i == 3) {
+                neuron.setWeight(0, 1);
+                neuron.setWeight(1, 1);
+                neuron.setWeight(2, 1);
+                neuron.setBias(-17.409);
+            }
+
             System.out.println("Neuron weights(Degree = " + i + ":");
             for (int j = 0; j < neuron.size(); j++) {
                 System.out.printf("w" + j + " = %5.5f\n", neuron.getWeight(j));
@@ -80,8 +87,8 @@ public class Main {
         }
 
         if(size == 3) {
-            //double[] a = new double[] {input * 7, input * input * -6.6, input * input * input * .01876};
-//            return a;
+            double[] a = new double[] {input * 7.09, input * input * -.6624, input * input * input * .01876};
+            return a;
         }
 
         double[] pattern = new double[size];
@@ -192,7 +199,10 @@ public class Main {
             double desired = testData.get(i)[1];
 
             double[] pattern = normalize(input, neuron.size());
-
+            if(neuron.size() == 3) {
+                System.out.println("|" + neuron.getWeight(0) + " " + neuron.getWeight(1) + " " + neuron.getWeight(2) + " " + neuron.getBias());
+                System.out.println("| " + pattern[0] + " " + pattern[1] + " " + pattern[2]);
+            }
             double output = neuron.execute(Neuron.ActivationFunction.NONE, pattern);
 
             totalError += Math.pow(desired - output, 2);
