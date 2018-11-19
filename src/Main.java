@@ -1,8 +1,7 @@
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 
 public class Main {
@@ -11,7 +10,7 @@ public class Main {
 
     final static int ITERATIONS = 10000;
 
-    final static double TRAINING_CONSTANT = .001;
+    final static double TRAINING_CONSTANT = .00001;
 
     final static double SOFT_RANGE = 5;
 
@@ -28,7 +27,7 @@ public class Main {
         System.out.println("Testing on " + testData.size() + " patterns\n");
 
 
-        for(int i = 1; i <= maxPolyDegree; i++) {
+        for (int i = 1; i <= maxPolyDegree; i++) {
             for (double[] data : trainData) {
                 double input = data[0];
                 double desired = data[1];
@@ -36,7 +35,7 @@ public class Main {
                 double[] pattern = normalize(input, i);
 
                 System.out.println("Input: " + input);
-                for(double num : pattern) {
+                for (double num : pattern) {
                     System.out.print(num + ", ");
                 }
                 System.out.println("\n**********************");
@@ -47,25 +46,25 @@ public class Main {
         double[] initWeights = new double[maxPolyDegree];
         double initBias = random.nextDouble();
 
-        for(int i = 0; i < initWeights.length; i++) {
+        for (int i = 0; i < initWeights.length; i++) {
             initWeights[i] = random.nextDouble();
         }
 
-        for(int i = 1; i <= maxPolyDegree; i++) {
+        for (int i = 1; i <= maxPolyDegree; i++) {
             // Make neuron
             Neuron neuron = new Neuron(i);
-            for(int j = 0; j < initWeights.length; j++) {
+            for (int j = 0; j < initWeights.length; j++) {
                 neuron.setWeight(j, initWeights[j]);
             }
             neuron.setBias(initBias);
 
             // Do the training
-            for(int j = 0; j < ITERATIONS; j++) {
+            for (int j = 0; j < ITERATIONS; j++) {
                 trainNeuron(neuron, trainData);
             }
 
             System.out.println("Neuron weights(Degree = " + i + ":");
-            for(int j = 0; j < neuron.size(); j++) {
+            for (int j = 0; j < neuron.size(); j++) {
                 System.out.printf("w" + j + " = %5.5f\n", neuron.getWeight(j));
             }
             System.out.printf("bias = %5.5f\n\n", neuron.getBias());
@@ -76,34 +75,39 @@ public class Main {
 
     public static double[] normalize(double input, int size) {
 
-        if(size == 1) {
-            return new double[] {input};
+        if (size == 1) {
+            return new double[]{input};
+        }
+
+        if(size == 3) {
+            //double[] a = new double[] {input * 7, input * input * -6.6, input * input * input * .01876};
+//            return a;
         }
 
         double[] pattern = new double[size];
+
+        for (int i = 0; i < size; i++) {
+            pattern[i] = pattern[i] - 12.5;
+        }
+
 
         for (int j = 0; j < size; j++) {
             pattern[j] = Math.pow(input, j + 1);
         }
 
-//        for(int i = 0; i < size; i++) {
-//            pattern[i] = pattern[i] - 12.5;
-//        }
-
-
         double squareSum = 0;
 
-        for(double num : pattern) {
+        for (double num : pattern) {
             squareSum += num * num;
         }
 
         double factor = Math.sqrt(squareSum);
 
-        for(int i = 0; i < pattern.length; i++ ){
+        for (int i = 0; i < pattern.length; i++) {
             pattern[i] = pattern[i] / factor;
         }
 
-        for(int i = 0; i < pattern.length; i++) {
+        for (int i = 0; i < pattern.length; i++) {
             pattern[i] = pattern[i] * Math.pow(12, pattern.length - i - 1);
         }
 
@@ -114,17 +118,17 @@ public class Main {
 
         ArrayList<double[]> data = new ArrayList<>();
 
-        String[] files = new String[] {"Project3_data/train_data_1.txt", "Project3_data/train_data_2.txt",
+        String[] files = new String[]{"Project3_data/train_data_1.txt", "Project3_data/train_data_2.txt",
                 "Project3_data/train_data_3.txt"};
 
-        for(int i = 0; i < files.length; i++) {
-            try(Scanner sc = new Scanner(new File(files[i]))) {
-                while(sc.hasNextLine()) {
+        for (int i = 0; i < files.length; i++) {
+            try (Scanner sc = new Scanner(new File(files[i]))) {
+                while (sc.hasNextLine()) {
                     String line = sc.nextLine();
                     String[] parts = line.split(",");
-                    data.add(new double[] {Double.parseDouble(parts[0].trim()), Double.parseDouble(parts[1].trim())});
+                    data.add(new double[]{Double.parseDouble(parts[0].trim()), Double.parseDouble(parts[1].trim())});
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -136,16 +140,16 @@ public class Main {
 
         ArrayList<double[]> data = new ArrayList<>();
 
-        String[] files = new String[] {"Project3_data/test_data_4.txt"};
+        String[] files = new String[]{"Project3_data/test_data_4.txt"};
 
-        for(int i = 0; i < files.length; i++) {
-            try(Scanner sc = new Scanner(new File(files[i]))) {
-                while(sc.hasNextLine()) {
+        for (int i = 0; i < files.length; i++) {
+            try (Scanner sc = new Scanner(new File(files[i]))) {
+                while (sc.hasNextLine()) {
                     String line = sc.nextLine();
                     String[] parts = line.split(",");
-                    data.add(new double[] {Double.parseDouble(parts[0].trim()), Double.parseDouble(parts[1].trim())});
+                    data.add(new double[]{Double.parseDouble(parts[0].trim()), Double.parseDouble(parts[1].trim())});
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -156,7 +160,7 @@ public class Main {
     public static Neuron trainNeuron(Neuron neuron, ArrayList<double[]> trainData) {
 
         // Train neuron
-        for(int i = 0; i < trainData.size(); i++) {
+        for (int i = 0; i < trainData.size(); i++) {
 
             double input = trainData.get(i)[0];
             double desired = trainData.get(i)[1];
@@ -183,7 +187,7 @@ public class Main {
 
         System.out.println("Input        Desired        Output");
 
-        for(int i = 0; i < testData.size(); i++) {
+        for (int i = 0; i < testData.size(); i++) {
             double input = testData.get(i)[0];
             double desired = testData.get(i)[1];
 
