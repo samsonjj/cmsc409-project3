@@ -76,6 +76,10 @@ public class Main {
             vector[i] = vector[i] / factor;
         }
 
+        for(int i = 0; i < vector.length; i++) {
+            vector[i] = vector[i] * Math.pow(12.5, vector.length - i - 1);
+        }
+
         return vector;
     }
 
