@@ -1,9 +1,16 @@
+
 public class Neuron {
 
     double[] weights;
     double bias;
 
-    static final double SOFT_CONSTANT = .05;
+    static double SOFT_CONSTANT = .05;
+
+    enum ActivationFunction {
+        HARD,
+        SOFT,
+        NONE;
+    }
 
     public Neuron(int numWeights) {
 
@@ -14,6 +21,10 @@ public class Neuron {
         }
 
         bias = 1;
+    }
+
+    public int size() {
+        return this.weights.length;
     }
 
     public void setWeight(int index, double weight) {
@@ -38,7 +49,7 @@ public class Neuron {
         return bias;
     }
 
-    public double executeHard(double... inputs) {
+    public double execute(ActivationFunction aFunc, double[] inputs) {
         if(inputs.length != weights.length) {
             System.out.println("bad inputs passed into neuron");
             return Double.MAX_VALUE;
@@ -48,19 +59,12 @@ public class Neuron {
             sum += weights[i] * inputs[i];
         }
         sum += bias;
-        return sum >= 0 ? 1 : 0;
-    }
 
-    public double executeSoft(double... inputs) {
-        if(inputs.length != weights.length) {
-            System.out.println("bad inputs passed into neuron");
-            return Double.MAX_VALUE;
+        switch(aFunc) {
+            case SOFT: return (1.0 / (1 + (Math.exp(-1.0 * sum * SOFT_CONSTANT))));
+            case HARD: return (sum >= 0 ? 1 : 0);
+            case NONE: return sum;
+            default: return (sum >= 0 ? 1 : 0);
         }
-        double sum = 0;
-        for(int i = 0; i < inputs.length; i++) {
-            sum += weights[i] * inputs[i];
-        }
-        sum += bias;
-        return 1.0 / (1 + (Math.exp(-1.0 * sum * SOFT_CONSTANT)));
     }
 }
