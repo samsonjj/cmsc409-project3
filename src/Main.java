@@ -9,7 +9,7 @@ public class Main {
 
     final static Random random = new Random();
 
-    final static int ITERATIONS = 1000;
+    final static int ITERATIONS = 10000;
 
     final static double TRAINING_CONSTANT = .001;
 
@@ -32,13 +32,8 @@ public class Main {
             for (double[] data : trainData) {
                 double input = data[0];
                 double desired = data[1];
-                double[] pattern = new double[i];
 
-                for (int j = 0; j < i; j++) {
-                    pattern[j] = Math.pow(input, j + 1);
-                }
-
-                pattern = normalize(pattern);
+                double[] pattern = normalize(input, i);
 
                 System.out.println("Input: " + input);
                 for(double num : pattern) {
@@ -79,31 +74,40 @@ public class Main {
     }
 
 
-    public static double[] normalize(double[] array) {
+    public static double[] normalize(double input, int size) {
 
-        if(array.length == 1) {
-            return new double[] {array[0] / 12.5};
+        if(size == 1) {
+            return new double[] {input};
         }
 
-        double[] vector = array.clone();
+        double[] pattern = new double[size];
+
+        for (int j = 0; j < size; j++) {
+            pattern[j] = Math.pow(input, j + 1);
+        }
+
+//        for(int i = 0; i < size; i++) {
+//            pattern[i] = pattern[i] - 12.5;
+//        }
+
 
         double squareSum = 0;
 
-        for(double num : vector) {
+        for(double num : pattern) {
             squareSum += num * num;
         }
 
         double factor = Math.sqrt(squareSum);
 
-        for(int i = 0; i < vector.length; i++ ){
-            vector[i] = vector[i] / factor;
+        for(int i = 0; i < pattern.length; i++ ){
+            pattern[i] = pattern[i] / factor;
         }
 
-        for(int i = 0; i < vector.length; i++) {
-            vector[i] = vector[i] * Math.pow(12.5, vector.length - i - 1);
+        for(int i = 0; i < pattern.length; i++) {
+            pattern[i] = pattern[i] * Math.pow(12, pattern.length - i - 1);
         }
 
-        return vector;
+        return pattern;
     }
 
     public static ArrayList<double[]> readInputTrainData() {
@@ -157,13 +161,8 @@ public class Main {
             double input = trainData.get(i)[0];
             double desired = trainData.get(i)[1];
 
-            double[] pattern = new double[neuron.size()];
 
-            for (int j = 0; j < neuron.size(); j++) {
-                pattern[j] = Math.pow(input, j + 1);
-            }
-
-            pattern = normalize(pattern);
+            double[] pattern = normalize(input, neuron.size());
 
             double output = neuron.execute(Neuron.ActivationFunction.NONE, pattern);
 
@@ -185,14 +184,10 @@ public class Main {
         System.out.println("Input        Desired        Output");
 
         for(int i = 0; i < testData.size(); i++) {
+            double input = testData.get(i)[0];
             double desired = testData.get(i)[1];
-            double[] pattern = new double[neuron.size()];
 
-            for (int j = 0; j < neuron.size(); j++) {
-                pattern[j] = Math.pow(testData.get(i)[0], j + 1);
-            }
-
-            pattern = normalize(pattern);
+            double[] pattern = normalize(input, neuron.size());
 
             double output = neuron.execute(Neuron.ActivationFunction.NONE, pattern);
 
