@@ -195,14 +195,14 @@ public class Main {
 //        for (int i = 0; i < testData.size(); i++) {
 //            System.out.printf("%f\n", inputs.get(i));
 //        }
-        System.out.println("\n Desireds: \n");
-        for (int i = 0; i < testData.size(); i++) {
-            System.out.printf("%f\n", desireds.get(i));
-        }
-        System.out.println("\n Outputs: \n");
-        for (int i = 0; i < testData.size(); i++) {
-            System.out.printf("%f\n", outputs.get(i));
-        }
+//        System.out.println("\n Desireds: \n");
+//        for (int i = 0; i < testData.size(); i++) {
+//            System.out.printf("%f\n", desireds.get(i));
+//        }
+//        System.out.println("\n Outputs: \n");
+//        for (int i = 0; i < testData.size(); i++) {
+//            System.out.printf("%f\n", outputs.get(i));
+//        }
 
             totalError = Math.sqrt(totalError);
         System.out.println("\nTotal Error: " + totalError);
