@@ -44,6 +44,7 @@ public class Main {
             // Do the training
             for (int j = 0; j < ITERATIONS; j++) {
                 trainNeuron(neuron, trainData);
+            }
 
             System.out.println("Neuron weights(Degree = " + i + ":");
             for (int j = 0; j < neuron.size(); j++) {
@@ -166,14 +167,14 @@ public class Main {
 //        for (int i = 0; i < testData.size(); i++) {
 //            System.out.printf("%f\n", inputs.get(i));
 //        }
-//        System.out.println("Desireds:");
-//        for (int i = 0; i < testData.size(); i++) {
-//            System.out.printf("%f\n", desireds.get(i));
-//        }
-//        System.out.println("Outputs:");
-//        for (int i = 0; i < testData.size(); i++) {
-//            System.out.printf("%f\n", outputs.get(i));
-//        }
+        System.out.println("\n Desireds: \n");
+        for (int i = 0; i < testData.size(); i++) {
+            System.out.printf("%f\n", desireds.get(i));
+        }
+        System.out.println("\n Outputs: \n");
+        for (int i = 0; i < testData.size(); i++) {
+            System.out.printf("%f\n", outputs.get(i));
+        }
 
             totalError = Math.sqrt(totalError);
         System.out.println("\nTotal Error: " + totalError);
