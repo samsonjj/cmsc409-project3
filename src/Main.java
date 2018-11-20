@@ -26,22 +26,6 @@ public class Main {
         System.out.println("Testing on " + testData.size() + " patterns\n");
 
 
-//        for (int i = 1; i <= maxPolyDegree; i++) {
-//            for (double[] data : trainData) {
-//                double input = data[0];
-//                double desired = data[1];
-//
-//                double[] pattern = normalize(input, i);
-//
-//                System.out.println("Input: " + input);
-//                for (double num : pattern) {
-//                    System.out.print(num + ", ");
-//                }
-//                System.out.println("\n**********************");
-//            }
-//        }
-
-
         double[] initWeights = new double[maxPolyDegree];
         double initBias = random.nextDouble();
 
@@ -56,20 +40,10 @@ public class Main {
                 neuron.setWeight(j, initWeights[j]);
             }
             neuron.setBias(initBias);
-//            neuron.setBias(-17.409);
-//            neuron.setBias(1);
 
             // Do the training
             for (int j = 0; j < ITERATIONS; j++) {
                 trainNeuron(neuron, trainData);
-            }
-
-//            if(i == 3) {
-//                neuron.setWeight(0, 1);
-//                neuron.setWeight(1, 1);
-//                neuron.setWeight(2, 1);
-//                neuron.setBias(-17.409);
-//            }
 
             System.out.println("Neuron weights(Degree = " + i + ":");
             for (int j = 0; j < neuron.size(); j++) {
@@ -88,33 +62,11 @@ public class Main {
             return new double[]{input};
         }
 
-//        if(size == 3) {
-//            double[] a = new double[] {input * 7.09, input * input * -.6624, input * input * input * .01876};
-////            double[] a = new double[] {input * 6, input * input * -1, input * input * input * .02};
-//            return a;
-//        }
-
         double[] pattern = new double[size];
 
         for (int j = 0; j < size; j++) {
             pattern[j] = Math.pow(input, j + 1);
         }
-//
-//        for (int j = 0; j < pattern.length; j++) {
-//            pattern[j] = pattern[j] * Math.pow(12, pattern.length - j - 1);
-//        }
-//
-//        double squareSum = 0;
-//
-//        for (double num : pattern) {
-//            squareSum += num * num;
-//        }
-//
-//        double factor = Math.sqrt(squareSum);
-//
-//        for (int i = 0; i < pattern.length; i++) {
-//            pattern[i] = pattern[i] / factor;
-//        }
 
         return pattern;
     }
@@ -201,10 +153,6 @@ public class Main {
             double desired = testData.get(i)[1];
 
             double[] pattern = normalize(input, neuron.size());
-//            if(neuron.size() == 3) {
-//                System.out.println("|" + neuron.getWeight(0) + " " + neuron.getWeight(1) + " " + neuron.getWeight(2) + " " + neuron.getBias());
-//                System.out.println("| " + pattern[0] + " " + pattern[1] + " " + pattern[2]);
-//            }
             double output = neuron.execute(Neuron.ActivationFunction.NONE, pattern);
 
             totalError += Math.pow(desired - output, 2);
@@ -212,20 +160,20 @@ public class Main {
             inputs.add(input);
             desireds.add(desired);
             outputs.add(output);
-            //System.out.printf("%f        %f        %f\n", testData.get(i)[0], desired, output);
+            System.out.printf("%f        %f        %f\n", testData.get(i)[0], desired, output);
         }
-        System.out.println("Inputs:");
-        for (int i = 0; i < testData.size(); i++) {
-            System.out.printf("%f\n", inputs.get(i));
-        }
-        System.out.println("Desireds:");
-        for (int i = 0; i < testData.size(); i++) {
-            System.out.printf("%f\n", desireds.get(i));
-        }
-        System.out.println("Outputs:");
-        for (int i = 0; i < testData.size(); i++) {
-            System.out.printf("%f\n", outputs.get(i));
-        }
+//        System.out.println("Inputs:");
+//        for (int i = 0; i < testData.size(); i++) {
+//            System.out.printf("%f\n", inputs.get(i));
+//        }
+//        System.out.println("Desireds:");
+//        for (int i = 0; i < testData.size(); i++) {
+//            System.out.printf("%f\n", desireds.get(i));
+//        }
+//        System.out.println("Outputs:");
+//        for (int i = 0; i < testData.size(); i++) {
+//            System.out.printf("%f\n", outputs.get(i));
+//        }
 
             totalError = Math.sqrt(totalError);
         System.out.println("\nTotal Error: " + totalError);
