@@ -8,14 +8,12 @@ public class Main {
 
     final static Random random = new Random();
 
-    final static int ITERATIONS = 100000;
+    final static int ITERATIONS = 1000000;
 
-    final static double TRAINING_CONSTANT = .000001;
-    final static double BIAS_TRAINING_MODIFIER = 10;
+    final static double TRAINING_CONSTANT = .00000001;
+    final static double BIAS_TRAINING_MODIFIER = 50;
 
-    final static double SOFT_RANGE = 5;
-
-    final static int maxPolyDegree = 4;
+    final static int maxPolyDegree = 3;
 
     public static void main(String[] args) {
 
@@ -98,24 +96,24 @@ public class Main {
         double[] pattern = new double[size];
 
         for (int j = 0; j < size; j++) {
-            pattern[j] = Math.pow(input - 12.5, j + 1);
+            pattern[j] = Math.pow(input, j + 1);
         }
-
-        for (int j = 0; j < pattern.length; j++) {
-            pattern[j] = pattern[j] * Math.pow(12, pattern.length - j - 1);
-        }
-
-        double squareSum = 0;
-
-        for (double num : pattern) {
-            squareSum += num * num;
-        }
-
-        double factor = Math.sqrt(squareSum);
-
-        for (int i = 0; i < pattern.length; i++) {
-            pattern[i] = pattern[i] / factor;
-        }
+//
+//        for (int j = 0; j < pattern.length; j++) {
+//            pattern[j] = pattern[j] * Math.pow(12, pattern.length - j - 1);
+//        }
+//
+//        double squareSum = 0;
+//
+//        for (double num : pattern) {
+//            squareSum += num * num;
+//        }
+//
+//        double factor = Math.sqrt(squareSum);
+//
+//        for (int i = 0; i < pattern.length; i++) {
+//            pattern[i] = pattern[i] / factor;
+//        }
 
         return pattern;
     }
