@@ -51,8 +51,36 @@ public class Main {
                 System.out.printf("w" + j + " = %5.5f\n", neuron.getWeight(j));
             }
             System.out.printf("bias = %5.5f\n\n", neuron.getBias());
-            testNeuron(neuron, testData);
-            testNeuron(neuron, trainData);
+//            testNeuron(neuron, testData);
+//            testNeuron(neuron, trainData);
+
+            /***************************************/
+            System.out.println("********************************************");
+            System.out.println("********************************************");
+            System.out.println("********************************************");
+            System.out.println("********************************************");
+            System.out.println("********************************************");
+            System.out.println("\nResults for individual test days");
+
+            ArrayList<double[]> day1 = new ArrayList<>();
+            ArrayList<double[]> day2 = new ArrayList<>();
+            ArrayList<double[]> day3 = new ArrayList<>();
+
+            for(int k = 0; k < 16; k++) {
+                day1.add(trainData.get(k));
+            }
+            for(int k = 16; k < 32; k++) {
+                day2.add(trainData.get(k));
+            }
+            for(int k = 32; k < 48; k++) {
+                day3.add(trainData.get(k));
+            }
+            System.out.println("DAY 1");
+            testNeuron(neuron, day1);
+            System.out.println("DAY 2");
+            testNeuron(neuron, day2);
+            System.out.println("DAY 3");
+            testNeuron(neuron, day3);
         }
     }
 
