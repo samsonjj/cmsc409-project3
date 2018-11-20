@@ -8,9 +8,10 @@ public class Main {
 
     final static Random random = new Random();
 
-    final static int ITERATIONS = 10000;
+    final static int ITERATIONS = 100000;
 
-    final static double TRAINING_CONSTANT = .00001;
+    final static double TRAINING_CONSTANT = .000001;
+    final static double BIAS_TRAINING_MODIFIER = 10;
 
     final static double SOFT_RANGE = 5;
 
@@ -57,18 +58,20 @@ public class Main {
                 neuron.setWeight(j, initWeights[j]);
             }
             neuron.setBias(initBias);
+//            neuron.setBias(-17.409);
+//            neuron.setBias(1);
 
             // Do the training
             for (int j = 0; j < ITERATIONS; j++) {
                 trainNeuron(neuron, trainData);
             }
 
-            if(i == 3) {
-                neuron.setWeight(0, 1);
-                neuron.setWeight(1, 1);
-                neuron.setWeight(2, 1);
-                neuron.setBias(-17.409);
-            }
+//            if(i == 3) {
+//                neuron.setWeight(0, 1);
+//                neuron.setWeight(1, 1);
+//                neuron.setWeight(2, 1);
+//                neuron.setBias(-17.409);
+//            }
 
             System.out.println("Neuron weights(Degree = " + i + ":");
             for (int j = 0; j < neuron.size(); j++) {
@@ -86,20 +89,20 @@ public class Main {
             return new double[]{input};
         }
 
-        if(size == 3) {
-            double[] a = new double[] {input * 7.09, input * input * -.6624, input * input * input * .01876};
-            return a;
-        }
+//        if(size == 3) {
+//            double[] a = new double[] {input * 7.09, input * input * -.6624, input * input * input * .01876};
+////            double[] a = new double[] {input * 6, input * input * -1, input * input * input * .02};
+//            return a;
+//        }
 
         double[] pattern = new double[size];
 
-        for (int i = 0; i < size; i++) {
-            pattern[i] = pattern[i] - 12.5;
+        for (int j = 0; j < size; j++) {
+            pattern[j] = Math.pow(input - 12.5, j + 1);
         }
 
-
-        for (int j = 0; j < size; j++) {
-            pattern[j] = Math.pow(input, j + 1);
+        for (int j = 0; j < pattern.length; j++) {
+            pattern[j] = pattern[j] * Math.pow(12, pattern.length - j - 1);
         }
 
         double squareSum = 0;
@@ -112,10 +115,6 @@ public class Main {
 
         for (int i = 0; i < pattern.length; i++) {
             pattern[i] = pattern[i] / factor;
-        }
-
-        for (int i = 0; i < pattern.length; i++) {
-            pattern[i] = pattern[i] * Math.pow(12, pattern.length - i - 1);
         }
 
         return pattern;
@@ -177,11 +176,11 @@ public class Main {
 
             double output = neuron.execute(Neuron.ActivationFunction.NONE, pattern);
 
-            for (int j = 0; i < neuron.size(); i++) {
+            for (int j = 0; j < neuron.size(); j++) {
                 double delta = TRAINING_CONSTANT * pattern[j] * (desired - output);
                 neuron.setWeight(j, neuron.getWeight(j) + delta);
             }
-            double deltaBias = TRAINING_CONSTANT * 1 * (desired - output);
+            double deltaBias = TRAINING_CONSTANT * 1 * BIAS_TRAINING_MODIFIER * (desired - output);
             neuron.setBias(neuron.getBias() + deltaBias);
         }
 
@@ -199,10 +198,10 @@ public class Main {
             double desired = testData.get(i)[1];
 
             double[] pattern = normalize(input, neuron.size());
-            if(neuron.size() == 3) {
-                System.out.println("|" + neuron.getWeight(0) + " " + neuron.getWeight(1) + " " + neuron.getWeight(2) + " " + neuron.getBias());
-                System.out.println("| " + pattern[0] + " " + pattern[1] + " " + pattern[2]);
-            }
+//            if(neuron.size() == 3) {
+//                System.out.println("|" + neuron.getWeight(0) + " " + neuron.getWeight(1) + " " + neuron.getWeight(2) + " " + neuron.getBias());
+//                System.out.println("| " + pattern[0] + " " + pattern[1] + " " + pattern[2]);
+//            }
             double output = neuron.execute(Neuron.ActivationFunction.NONE, pattern);
 
             totalError += Math.pow(desired - output, 2);
