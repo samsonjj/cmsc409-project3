@@ -13,7 +13,7 @@ public class Main {
     final static double TRAINING_CONSTANT = .00000001;
     final static double BIAS_TRAINING_MODIFIER = 50;
 
-    final static int maxPolyDegree = 3;
+    final static int MAX_POLY_DEGREE = 3;
 
     public static void main(String[] args) {
 
@@ -26,14 +26,14 @@ public class Main {
         System.out.println("Testing on " + testData.size() + " patterns\n");
 
 
-        double[] initWeights = new double[maxPolyDegree];
+        double[] initWeights = new double[MAX_POLY_DEGREE];
         double initBias = random.nextDouble();
 
         for (int i = 0; i < initWeights.length; i++) {
             initWeights[i] = random.nextDouble();
         }
 
-        for (int i = 1; i <= maxPolyDegree; i++) {
+        for (int i = 1; i <= MAX_POLY_DEGREE; i++) {
             // Make neuron
             Neuron neuron = new Neuron(i);
             for (int j = 0; j < initWeights.length; j++) {
@@ -46,21 +46,21 @@ public class Main {
                 trainNeuron(neuron, trainData);
             }
 
-            System.out.println("Neuron weights(Degree = " + i + ":");
+
+
+            // Do print outs
+            System.out.println();
+            System.out.println("***********************************************");
+            System.out.println("***********************************************");
+            System.out.println();
+
+            System.out.println("Neuron weights (Degree = " + i + "):");
             for (int j = 0; j < neuron.size(); j++) {
                 System.out.printf("w" + j + " = %5.5f\n", neuron.getWeight(j));
             }
             System.out.printf("bias = %5.5f\n\n", neuron.getBias());
-//            testNeuron(neuron, testData);
-//            testNeuron(neuron, trainData);
 
-            /***************************************/
-            System.out.println("********************************************");
-            System.out.println("********************************************");
-            System.out.println("********************************************");
-            System.out.println("********************************************");
-            System.out.println("********************************************");
-            System.out.println("\nResults for individual test days");
+            System.out.println();
 
             ArrayList<double[]> day1 = new ArrayList<>();
             ArrayList<double[]> day2 = new ArrayList<>();
@@ -81,6 +81,8 @@ public class Main {
             testNeuron(neuron, day2);
             System.out.println("DAY 3");
             testNeuron(neuron, day3);
+            System.out.println("DAY 4");
+            testNeuron(neuron, testData);
         }
     }
 
@@ -173,10 +175,6 @@ public class Main {
 
         System.out.println("Input        Desired        Output");
 
-        ArrayList<Double> inputs = new ArrayList<>();
-        ArrayList<Double> desireds = new ArrayList<>();
-        ArrayList<Double> outputs = new ArrayList<>();
-
         for (int i = 0; i < testData.size(); i++) {
             double input = testData.get(i)[0];
             double desired = testData.get(i)[1];
@@ -186,25 +184,10 @@ public class Main {
 
             totalError += Math.pow(desired - output, 2);
 
-            inputs.add(input);
-            desireds.add(desired);
-            outputs.add(output);
             System.out.printf("%f        %f        %f\n", testData.get(i)[0], desired, output);
         }
-//        System.out.println("Inputs:");
-//        for (int i = 0; i < testData.size(); i++) {
-//            System.out.printf("%f\n", inputs.get(i));
-//        }
-//        System.out.println("\n Desireds: \n");
-//        for (int i = 0; i < testData.size(); i++) {
-//            System.out.printf("%f\n", desireds.get(i));
-//        }
-//        System.out.println("\n Outputs: \n");
-//        for (int i = 0; i < testData.size(); i++) {
-//            System.out.printf("%f\n", outputs.get(i));
-//        }
 
-            totalError = Math.sqrt(totalError);
+        totalError = Math.sqrt(totalError);
         System.out.println("\nTotal Error: " + totalError);
     }
 }
